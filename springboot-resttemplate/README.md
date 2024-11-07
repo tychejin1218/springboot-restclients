@@ -268,6 +268,8 @@ void testDeleteRequest() throws Exception {
 
 이 테스트는 DELETE 요청을 보내고, 응답이 빈 값인지 확인합니다.
 
+
+
 ## 참고 자료
 - [Spring 공식 문서 - RestTemplate](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html)
 - [Guide to RestTemplate](https://www.baeldung.com/rest-template)
