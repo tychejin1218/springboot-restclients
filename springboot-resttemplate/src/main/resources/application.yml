@@ -1,0 +1,4 @@
+# 로그 설정
+logging:
+  level:
+    com.example.resttemplate: DEBUG
