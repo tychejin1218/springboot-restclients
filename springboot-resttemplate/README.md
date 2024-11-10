@@ -7,14 +7,14 @@
 ## 주요 클래스와 메서드
 
 - `RestTemplate`: HTTP 클라이언트를 생성하고 설정합니다.
-  - `getForObject()`: 주어진 URL로 GET 요청을 보내고 결과를 객체로 반환합니다.
-  - `getForEntity()`: 주어진 URL로 GET 요청을 보내고 결과를 `ResponseEntity`로 반환합니다.
-  - `postForObject()`: 주어진 URL로 POST 요청을 보내고 결과를 객체로 반환합니다.
-  - `postForEntity()`: 주어진 URL로 POST 요청을 보내고 결과를 `ResponseEntity`로 반환합니다.
-  - `put()`: 주어진 URL로 PUT 요청을 보냅니다.
-  - `delete()`: 주어진 URL로 DELETE 요청을 보냅니다.
-  - `exchange()`: 주어진 URL로 특정 HTTP 메서드 요청을 보냅니다.
-  - `headForHeaders()`: 주어진 URL로 HEAD 요청을 보내고 결과로 헤더 정보를 반환합니다.
+  - `getForObject()`: GET 요청을 URL에 보내고, 결과를 객체로 반환합니다.
+  - `getForEntity()`: GET 요청을 URL에 보내고, 결과를 `ResponseEntity`로 반환합니다.
+  - `postForObject()`: POST 요청을 URL에 보내고, 결과를 객체로 반환합니다.
+  - `postForEntity()`: POST 요청을 URL에 보내고, 결과를 `ResponseEntity`로 반환합니다.
+  - `put()`: PUT 요청을 URL에 보냅니다.
+  - `delete()`: DELETE 요청을 URL에 보냅니다.
+  - `exchange()`: 특정 HTTP 메서드 요청을 URL에 보냅니다.
+  - `headForHeaders()`: HEAD 요청을 URL에 보내고, 결과로 헤더 정보를 반환합니다.
 
 ## RestTemplate 사용 예제
 
