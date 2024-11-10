@@ -20,7 +20,9 @@
 
 ### 1. RestTemplate 설정
 
-`RestTemplateBuilder`를 통해 `RestTemplate` 객체를 구성하며, 연결 타임아웃(`setConnectTimeout`)과 읽기 타임아웃(`setReadTimeout`)을 각각 5초로 설정한 후 스프링 빈으로 등록합니다.
+Spring Boot를 사용하면, 별도로 Gradle 빌드 파일에 `RestTemplate` 의존성을 추가할 필요 없이 HTTP 요청을 보낼 수 있습니다. 이는 Spring Boot가 자동 구성(auto-config) 기능을 가지고 있어, 필요한 라이브러리를 자동으로 추가하고 구성해주기 때문입니다. 다만, 구체적인 설정(예: 타임아웃 값 조정 등)가 필요한 경우에는 직접 설정을 추가해야 합니다.
+
+`RestTemplateBuilder`를 사용하여 `RestTemplate` 객체를 구성하며, 연결 타임아웃(`setConnectTimeout`)과 읽기 타임아웃(`setReadTimeout`)을 각각 5초로 설정한 후 스프링 빈으로 등록합니다.
 
 ```java
 import java.time.Duration;
@@ -146,7 +148,9 @@ public class HttpUtil {
 
 `HttpUtil` 클래스를 테스트하여 HTTP 요청(GET, POST, PUT, DELETE)이 정상적으로 동작하는지 확인합니다.
 
-### 3.1 GET 요청 테스트
+### 3_1. GET 요청 테스트
+
+GET 요청을 보내고, 응답의 ID가 요청한 ID와 같은지 확인합니다.
 
 ```java
 @DisplayName("GET 요청: ID를 기준으로 포스트 조회 후 응답 ID 확인")
@@ -170,9 +174,9 @@ void testGetRequest() throws Exception {
 }
 ```
 
-이 테스트는 GET 요청을 보내고, 응답의 ID가 요청한 ID와 같은지 확인합니다.
+### 3_2. POST 요청 테스트
 
-### 3.2 POST 요청 테스트
+POST 요청을 보내고, 응답의 title과 body가 요청한 값과 같은지 확인합니다.
 
 ```java
 @DisplayName("POST 요청: 포스트 저장 후 응답의 title과 body 확인")
@@ -204,9 +208,9 @@ void testPostRequest() throws Exception {
 }
 ```
 
-이 테스트는 POST 요청을 보내고, 응답의 title과 body가 요청한 값과 같은지 확인합니다.
+### 3_3. PUT 요청 테스트
 
-### 3.3 PUT 요청 테스트
+PUT 요청을 보내고, 응답의 title과 body가 요청한 값과 같은지 확인합니다.
 
 ```java
 @DisplayName("PUT 요청: 포스트 수정 후 응답의 title과 body 확인")
@@ -239,9 +243,9 @@ void testPutRequest() throws Exception {
 }
 ```
 
-이 테스트는 PUT 요청을 보내고, 응답의 title과 body가 요청한 값과 같은지 확인합니다.
+### 3_4. DELETE 요청 테스트
 
-### 3.4 DELETE 요청 테스트
+DELETE 요청을 보내고, 응답이 빈 값인지 확인합니다.
 
 ```java
 @DisplayName("DELETE 요청: 포스트 삭제 후 응답이 빈 값인지 확인")
@@ -265,8 +269,6 @@ void testDeleteRequest() throws Exception {
   );
 }
 ```
-
-이 테스트는 DELETE 요청을 보내고, 응답이 빈 값인지 확인합니다.
 
 
 
