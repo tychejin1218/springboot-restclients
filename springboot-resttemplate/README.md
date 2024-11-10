@@ -22,7 +22,7 @@
 
 Spring Boot를 사용하면, 별도로 Gradle 빌드 파일에 `RestTemplate` 의존성을 추가할 필요 없이 HTTP 요청을 보낼 수 있습니다. 이는 Spring Boot가 자동 구성(auto-config) 기능을 가지고 있어, 필요한 라이브러리를 자동으로 추가하고 구성해주기 때문입니다. 다만, 구체적인 설정(예: 타임아웃 값 조정 등)가 필요한 경우에는 직접 설정을 추가해야 합니다.
 
-`RestTemplateBuilder`를 사용하여 `RestTemplate` 객체를 구성하며, 연결 타임아웃(`setConnectTimeout`)과 읽기 타임아웃(`setReadTimeout`)을 각각 5초로 설정한 후 스프링 빈으로 등록합니다.
+아래와 같이 `RestTemplateBuilder`를 사용하여 `RestTemplate` 객체를 구성하며, 연결 타임아웃(`setConnectTimeout`)과 읽기 타임아웃(`setReadTimeout`)을 각각 5초로 설정한 후 스프링 빈으로 등록할 수 있습니다.
 
 ```java
 import java.time.Duration;
