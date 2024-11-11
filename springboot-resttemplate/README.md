@@ -7,22 +7,25 @@
 ## 주요 클래스와 메서드
 
 - `RestTemplate`: HTTP 클라이언트를 생성하고 설정합니다.
-  - `getForObject()`: GET 요청을 URL에 보내고, 결과를 객체로 반환합니다.
-  - `getForEntity()`: GET 요청을 URL에 보내고, 결과를 `ResponseEntity`로 반환합니다.
-  - `postForObject()`: POST 요청을 URL에 보내고, 결과를 객체로 반환합니다.
-  - `postForEntity()`: POST 요청을 URL에 보내고, 결과를 `ResponseEntity`로 반환합니다.
-  - `put()`: PUT 요청을 URL에 보냅니다.
-  - `delete()`: DELETE 요청을 URL에 보냅니다.
-  - `exchange()`: 특정 HTTP 메서드 요청을 URL에 보냅니다.
-  - `headForHeaders()`: HEAD 요청을 URL에 보내고, 결과로 헤더 정보를 반환합니다.
+    - `getForObject()`: GET 요청을 URL에 보내고, 결과를 객체로 반환합니다.
+    - `getForEntity()`: GET 요청을 URL에 보내고, 결과를 `ResponseEntity`로 반환합니다.
+    - `postForObject()`: POST 요청을 URL에 보내고, 결과를 객체로 반환합니다.
+    - `postForEntity()`: POST 요청을 URL에 보내고, 결과를 `ResponseEntity`로 반환합니다.
+    - `put()`: PUT 요청을 URL에 보냅니다.
+    - `delete()`: DELETE 요청을 URL에 보냅니다.
+    - `exchange()`: 특정 HTTP 메서드 요청을 URL에 보냅니다.
+    - `headForHeaders()`: HEAD 요청을 URL에 보내고, 결과로 헤더 정보를 반환합니다.
 
 ## RestTemplate 사용 예제
 
 ### 1. RestTemplate 설정
 
-Spring Boot를 사용하면, 별도로 Gradle 빌드 파일에 `RestTemplate` 의존성을 추가할 필요 없이 HTTP 요청을 보낼 수 있습니다. 이는 Spring Boot가 자동 구성(auto-config) 기능을 가지고 있어, 필요한 라이브러리를 자동으로 추가하고 구성해주기 때문입니다. 다만, 구체적인 설정(예: 타임아웃 값 조정 등)가 필요한 경우에는 직접 설정을 추가해야 합니다.
+Spring Boot를 사용하면, 별도로 Gradle 빌드 파일에 `RestTemplate` 의존성을 추가할 필요 없이 HTTP 요청을 보낼 수 있습니다. 이는 Spring
+Boot가 자동 구성(auto-config) 기능을 가지고 있어, 필요한 라이브러리를 자동으로 추가하고 구성해주기 때문입니다. 다만, 구체적인 설정(예: 타임아웃 값 조정 등)가
+필요한 경우에는 직접 설정을 추가해야 합니다.
 
-아래와 같이 `RestTemplateBuilder`를 사용하여 `RestTemplate` 객체를 구성하며, 연결 타임아웃(`setConnectTimeout`)과 읽기 타임아웃(`setReadTimeout`)을 각각 5초로 설정한 후 스프링 빈으로 등록할 수 있습니다.
+아래와 같이 `RestTemplateBuilder`를 사용하여 `RestTemplate` 객체를 구성하며, 연결 타임아웃(`setConnectTimeout`)과 읽기 타임아웃(
+`setReadTimeout`)을 각각 5초로 설정한 후 스프링 빈으로 등록할 수 있습니다.
 
 ```java
 import java.time.Duration;
@@ -42,16 +45,17 @@ public class RestTemplateConfig {
   @Bean
   public RestTemplate restTemplate() {
     return new RestTemplateBuilder()
-            .setConnectTimeout(Duration.ofSeconds(5)) // 연결 타임아웃을 5초로 설정
-            .setReadTimeout(Duration.ofSeconds(5)) // 읽기 타임아웃을 5초로 설정
-            .build();
+        .setConnectTimeout(Duration.ofSeconds(5)) // 연결 타임아웃을 5초로 설정
+        .setReadTimeout(Duration.ofSeconds(5)) // 읽기 타임아웃을 5초로 설정
+        .build();
   }
 }
 ```
 
 ### 2. HTTP 요청을 위한 유틸리티 클래스
 
-HttpUtil 클래스는 `RestTemplate`을 활용하여 다양한 HTTP 메서드(GET, POST, PUT, DELETE)를 사용하여 HTTP 요청을 보내고, 서버로부터 응답을 받아 이를 DTO 객체로 반환하는 유틸리티 클래스입니다.
+HttpUtil 클래스는 `RestTemplate`을 활용하여 다양한 HTTP 메서드(GET, POST, PUT, DELETE)를 사용하여 HTTP 요청을 보내고, 서버로부터
+응답을 받아 이를 DTO 객체로 반환하는 유틸리티 클래스입니다.
 
 ```java
 import java.util.Map;
@@ -95,7 +99,8 @@ public class HttpUtil {
    * @param responseType 응답을 매핑할 클래스 타입
    * @return 응답 객체
    */
-  public <T> ResponseEntity<T> sendGet(String targetUrl, Map<String, String> headers, Class<T> responseType) {
+  public <T> ResponseEntity<T> sendGet(String targetUrl, Map<String, String> headers,
+      Class<T> responseType) {
     HttpEntity<Void> entity = createHttpEntity(headers, null);
     return restTemplate.exchange(targetUrl, HttpMethod.GET, entity, responseType);
   }
@@ -109,7 +114,8 @@ public class HttpUtil {
    * @param responseType 응답을 매핑할 클래스 타입
    * @return 응답 객체
    */
-  public <T, R> ResponseEntity<R> sendPost(String targetUrl, T postData, Map<String, String> headers, Class<R> responseType) {
+  public <T, R> ResponseEntity<R> sendPost(String targetUrl, T postData,
+      Map<String, String> headers, Class<R> responseType) {
     HttpEntity<T> entity = createHttpEntity(headers, postData);
     return restTemplate.exchange(targetUrl, HttpMethod.POST, entity, responseType);
   }
@@ -123,7 +129,8 @@ public class HttpUtil {
    * @param responseType 응답을 매핑할 클래스 타입
    * @return 응답 객체
    */
-  public <T, R> ResponseEntity<R> sendPut(String targetUrl, T putData, Map<String, String> headers, Class<R> responseType) {
+  public <T, R> ResponseEntity<R> sendPut(String targetUrl, T putData, Map<String, String> headers,
+      Class<R> responseType) {
     HttpEntity<T> entity = createHttpEntity(headers, putData);
     return restTemplate.exchange(targetUrl, HttpMethod.PUT, entity, responseType);
   }
@@ -136,7 +143,8 @@ public class HttpUtil {
    * @param responseType 응답을 매핑할 클래스 타입
    * @return 응답 객체
    */
-  public <T> ResponseEntity<T> sendDelete(String targetUrl, Map<String, String> headers, Class<T> responseType) {
+  public <T> ResponseEntity<T> sendDelete(String targetUrl, Map<String, String> headers,
+      Class<T> responseType) {
     HttpEntity<Void> entity = createHttpEntity(headers, null);
     return restTemplate.exchange(targetUrl, HttpMethod.DELETE, entity, responseType);
   }
@@ -153,6 +161,7 @@ public class HttpUtil {
 GET 요청을 보내고, 응답의 ID가 요청한 ID와 같은지 확인합니다.
 
 ```java
+
 @DisplayName("GET 요청: ID를 기준으로 포스트 조회 후 응답 ID 확인")
 @Test
 void testGetRequest() throws Exception {
@@ -167,9 +176,9 @@ void testGetRequest() throws Exception {
 
   // Then
   assertAll(
-          () -> assertNotNull(response),
-          () -> assertNotNull(response.getBody()),
-          () -> assertEquals(1, response.getBody().getId())
+      () -> assertNotNull(response),
+      () -> assertNotNull(response.getBody()),
+      () -> assertEquals(1, response.getBody().getId())
   );
 }
 ```
@@ -179,6 +188,7 @@ void testGetRequest() throws Exception {
 POST 요청을 보내고, 응답의 title과 body가 요청한 값과 같은지 확인합니다.
 
 ```java
+
 @DisplayName("POST 요청: 포스트 저장 후 응답의 title과 body 확인")
 @Test
 void testPostRequest() throws Exception {
@@ -188,22 +198,22 @@ void testPostRequest() throws Exception {
   headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
   PostDTO post = PostDTO.builder()
-          .title("foo")
-          .body("bar")
-          .userId(1)
-          .build();
+      .title("foo")
+      .body("bar")
+      .userId(1)
+      .build();
 
   // When
   ResponseEntity<PostDTO> response = httpUtil.sendPost(TEST_POST_URL, post, headers,
-          PostDTO.class);
+      PostDTO.class);
   log.debug("response: {}", objectMapper.writeValueAsString(response.getBody()));
 
   // Then
   assertAll(
-          () -> assertNotNull(response),
-          () -> assertNotNull(response.getBody()),
-          () -> assertEquals("foo", response.getBody().getTitle()),
-          () -> assertEquals("bar", response.getBody().getBody())
+      () -> assertNotNull(response),
+      () -> assertNotNull(response.getBody()),
+      () -> assertEquals("foo", response.getBody().getTitle()),
+      () -> assertEquals("bar", response.getBody().getBody())
   );
 }
 ```
@@ -213,6 +223,7 @@ void testPostRequest() throws Exception {
 PUT 요청을 보내고, 응답의 title과 body가 요청한 값과 같은지 확인합니다.
 
 ```java
+
 @DisplayName("PUT 요청: 포스트 수정 후 응답의 title과 body 확인")
 @Test
 void testPutRequest() throws Exception {
@@ -222,23 +233,23 @@ void testPutRequest() throws Exception {
   headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
   PostDTO putData = PostDTO.builder()
-          .id(1)
-          .title("foo")
-          .body("bar")
-          .userId(1)
-          .build();
+      .id(1)
+      .title("foo")
+      .body("bar")
+      .userId(1)
+      .build();
 
   // When
   ResponseEntity<PostDTO> response = httpUtil.sendPut(TEST_PUT_URL, putData, headers,
-          PostDTO.class);
+      PostDTO.class);
   log.debug("response: {}", objectMapper.writeValueAsString(response.getBody()));
 
   // Then
   assertAll(
-          () -> assertNotNull(response),
-          () -> assertNotNull(response.getBody()),
-          () -> assertEquals("foo", response.getBody().getTitle()),
-          () -> assertEquals("bar", response.getBody().getBody())
+      () -> assertNotNull(response),
+      () -> assertNotNull(response.getBody()),
+      () -> assertEquals("foo", response.getBody().getTitle()),
+      () -> assertEquals("bar", response.getBody().getBody())
   );
 }
 ```
@@ -248,6 +259,7 @@ void testPutRequest() throws Exception {
 DELETE 요청을 보내고, 응답이 빈 값인지 확인합니다.
 
 ```java
+
 @DisplayName("DELETE 요청: 포스트 삭제 후 응답이 빈 값인지 확인")
 @Test
 void testDeleteRequest() throws Exception {
@@ -262,16 +274,15 @@ void testDeleteRequest() throws Exception {
 
   // Then
   assertAll(
-          () -> assertNotNull(response),
-          () -> assertNotNull(response.getBody()),
-          () -> assertEquals(null, response.getBody().getTitle()),
-          () -> assertEquals(null, response.getBody().getBody())
+      () -> assertNotNull(response),
+      () -> assertNotNull(response.getBody()),
+      () -> assertEquals(null, response.getBody().getTitle()),
+      () -> assertEquals(null, response.getBody().getBody())
   );
 }
 ```
 
-
-
 ## 참고 자료
+
 - [Spring 공식 문서 - RestTemplate](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html)
 - [Guide to RestTemplate](https://www.baeldung.com/rest-template)
