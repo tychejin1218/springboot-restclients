@@ -60,6 +60,93 @@ class HttpUtilTest {
     );
   }
 
+  @Order(2)
+  @DisplayName("POST 요청: 포스트 저장 후 응답의 title과 body 확인")
+  @Test
+  public void testPostRequest() throws Exception {
+
+    // Given
+    MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+    headers.add("key1", "value1");
+    headers.add("key1", "value2");
+    headers.add("key2", "value1");
+
+    PostDTO postData = PostDTO.builder()
+        .title("foo")
+        .body("bar")
+        .userId(1)
+        .build();
+
+    // When
+    ResponseEntity<PostDTO> response = httpUtil.sendPost(TEST_POST_URL, headers,
+        postData, PostDTO.class);
+    log.debug("response: {}", objectMapper.writeValueAsString(response.getBody()));
+
+    // Then
+    assertAll(
+        () -> assertNotNull(response),
+        () -> assertNotNull(response.getBody()),
+        () -> assertEquals("foo", response.getBody().getTitle()),
+        () -> assertEquals("bar", response.getBody().getBody())
+    );
+  }
+
+  @Order(3)
+  @DisplayName("PUT 요청: 포스트 수정 후 응답의 title과 body 확인")
+  @Test
+  public void testPutRequest() throws Exception {
+
+    // Given
+    MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+    headers.add("key1", "value1");
+    headers.add("key1", "value2");
+    headers.add("key2", "value1");
+
+    PostDTO putData = PostDTO.builder()
+        .id(1)
+        .title("foo")
+        .body("bar")
+        .userId(1)
+        .build();
+
+    // When
+    ResponseEntity<PostDTO> response = httpUtil.sendPut(TEST_PUT_URL, headers,
+        putData, PostDTO.class);
+    log.debug("response: {}", objectMapper.writeValueAsString(response.getBody()));
+
+    // Then
+    assertAll(
+        () -> assertNotNull(response),
+        () -> assertNotNull(response.getBody()),
+        () -> assertEquals("foo", response.getBody().getTitle()),
+        () -> assertEquals("bar", response.getBody().getBody())
+    );
+  }
+
+  @Order(4)
+  @DisplayName("DELETE 요청: 포스트 삭제 후 응답이 빈 값인지 확인")
+  @Test
+  public void testDeleteRequest() throws Exception {
+
+    // Given
+    MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+    headers.add("key1", "value1");
+    headers.add("key1", "value2");
+    headers.add("key2", "value1");
+
+    // When
+    ResponseEntity<PostDTO> response = httpUtil.sendDelete(TEST_DELETE_URL, headers, PostDTO.class);
+    log.debug("response: {}", objectMapper.writeValueAsString(response.getBody()));
+
+    // Then
+    assertAll(
+        () -> assertNotNull(response),
+        () -> assertNotNull(response.getBody()),
+        () -> assertEquals(null, response.getBody().getTitle()),
+        () -> assertEquals(null, response.getBody().getBody())
+    );
+  }
+
   @Getter
   @Builder
   @AllArgsConstructor
