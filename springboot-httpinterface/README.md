@@ -123,9 +123,9 @@ public class HttpInterfaceConfig {
 }
 ```
 
-### 2. 서비스 인터페이스와 DTO 클래스
+### 3. 서비스 인터페이스와 DTO 클래스
 
-#### 서비스 인터페이스
+#### 3_1. 서비스 인터페이스
 
 JSONPlaceholder API와 통신하기 위한 `PostService` 인터페이스를 정의합니다.
 
@@ -158,7 +158,7 @@ public interface PostService {
 }
 ```
 
-#### DTO 클래스
+#### 3_2. DTO 클래스
 
 요청 및 응답 데이터를 위한 DTO 클래스 `PostDto`를 정의합니다.
 
@@ -199,6 +199,8 @@ public class PostDto {
 ```
 
 ### 4. 단위 테스트 작성
+
+RestClient, HttpInterface를 활용한 HTTP 요청 (GET, POST, PUT, DELETE)이 정상적으로 동작하는지 확인합니다.
 
 #### 4_1. GET 요청 테스트
 
