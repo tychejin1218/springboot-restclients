@@ -30,7 +30,11 @@ public class HttpUtil {
     return restClient.get()
         .uri(targetUrl)
         .accept(MediaType.APPLICATION_JSON)
-        .headers(httpHeaders -> httpHeaders.addAll(headers))
+        .headers(httpHeaders -> {
+          if (headers != null && !headers.isEmpty()) {
+            httpHeaders.addAll(headers);
+          }
+        })
         .retrieve()
         .toEntity(responseType);
   }
@@ -49,7 +53,11 @@ public class HttpUtil {
     return restClient.post()
         .uri(targetUrl)
         .contentType(MediaType.APPLICATION_JSON)
-        .headers(httpHeaders -> httpHeaders.addAll(headers))
+        .headers(httpHeaders -> {
+          if (headers != null && !headers.isEmpty()) {
+            httpHeaders.addAll(headers);
+          }
+        })
         .body(body)
         .retrieve()
         .toEntity(responseType);
@@ -69,7 +77,11 @@ public class HttpUtil {
     return restClient.put()
         .uri(targetUrl)
         .contentType(MediaType.APPLICATION_JSON)
-        .headers(httpHeaders -> httpHeaders.addAll(headers))
+        .headers(httpHeaders -> {
+          if (headers != null && !headers.isEmpty()) {
+            httpHeaders.addAll(headers);
+          }
+        })
         .body(body)
         .retrieve()
         .toEntity(responseType);
@@ -87,7 +99,11 @@ public class HttpUtil {
       Class<T> responseType) {
     return restClient.delete()
         .uri(targetUrl)
-        .headers(httpHeaders -> httpHeaders.addAll(headers))
+        .headers(httpHeaders -> {
+          if (headers != null && !headers.isEmpty()) {
+            httpHeaders.addAll(headers);
+          }
+        })
         .retrieve()
         .toEntity(responseType);
   }
