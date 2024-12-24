@@ -56,7 +56,7 @@ public class RestClientConfig {
         .setKeepAliveStrategy(new DefaultConnectionKeepAliveStrategy())
         .setRetryStrategy(buildRetryStrategy())
         .setConnectionReuseStrategy(DefaultConnectionReuseStrategy.INSTANCE)
-        .setDefaultRequestConfig(buildRequestConfig())
+        .setDefaultRequestConfig(requestConfig())
         .setConnectionManager(buildConnectionManager())
         .evictExpiredConnections()
         .evictIdleConnections(TimeValue.ofSeconds(MAX_IDLE_TIME))
@@ -80,10 +80,12 @@ public class RestClientConfig {
    *
    * @return 설정된 RequestConfig 객체
    */
-  private RequestConfig buildRequestConfig() {
+  private RequestConfig requestConfig() {
     return RequestConfig.custom()
+
         .setResponseTimeout(RESPONSE_TIMEOUT, TimeUnit.SECONDS)
         .setConnectionRequestTimeout(CONNECTION_REQUEST_TIMEOUT, TimeUnit.SECONDS)
+
         .build();
   }
 
