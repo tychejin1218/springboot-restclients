@@ -74,7 +74,10 @@ class HttpUtilTimeoutTest {
   void testConnectTimeout() {
 
     // Given: 비정상 IP 주소로 URL 설정
-    String targetUrl = "http://10.255.255.1:8080";
+    mockWebServer.enqueue(new MockResponse()
+        .setSocketPolicy(SocketPolicy.NO_RESPONSE));
+
+    String targetUrl = mockWebServer.url("/").toString();
 
     // When & Then: 연결 타임아웃 예외 발생
     ResourceAccessException exception = assertThrows(ResourceAccessException.class, () -> {

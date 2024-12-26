@@ -18,16 +18,16 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class RestClientConfig {
 
-  // Connection Pool 설정 값
-  private static final int MAX_TOTAL_CONNECTIONS = 100; // 최대 전체 커넥션 수
-  private static final int MAX_CONNECTIONS_PER_ROUTE = 10; // 특정 호스트(경로)별 최대 커넥션 수
-  private static final int MAX_IDLE_TIME = 10; // 유휴 연결 유지 시간 (초 단위)
+  // 연결 풀(Connection Pool) 설정 값
+  private static final int MAX_TOTAL_CONNECTIONS = 200; // 최대 전체 커넥션 수
+  private static final int MAX_CONNECTIONS_PER_ROUTE = 20; // 특정 호스트(경로)별 최대 커넥션 수
+  private static final int MAX_IDLE_TIME = 30; // 유휴 연결 유지 시간 (초 단위)
 
-  // Retry 설정 값
-  private static final int MAX_RETRIES = 1; // 요청 실패 시 재시도 횟수
+  // 재시도 설정 값
+  private static final int MAX_RETRIES = 0; // 요청 실패 시 재시도 횟수
   private static final long RETRY_INTERVAL_IN_SECONDS = 1L; // 재시도 간격 (초 단위)
 
-  // Timeout 설정 값
+  // 타임아웃 설정 값
   private static final long RESPONSE_TIMEOUT = 5L; // 응답 타임아웃 (초 단위)
   private static final long CONNECTION_REQUEST_TIMEOUT = 3L; // 연결 요청 타임아웃 (초 단위)
 
@@ -47,26 +47,26 @@ public class RestClientConfig {
   /**
    * HttpClient 빈을 생성
    *
-   * @return 설정된 HttpClient 객체
+   * @return HttpClient 객체
    */
   @Bean
   public HttpClient httpClient() {
     return HttpClients.custom()
-        .setConnectionBackoffStrategy(new DefaultBackoffStrategy())
+        .setConnectionManager(buildConnectionManager())
+        .setConnectionReuseStrategy(DefaultConnectionReuseStrategy.INSTANCE)
         .setKeepAliveStrategy(new DefaultConnectionKeepAliveStrategy())
         .setRetryStrategy(buildRetryStrategy())
-        .setConnectionReuseStrategy(DefaultConnectionReuseStrategy.INSTANCE)
+        .setConnectionBackoffStrategy(new DefaultBackoffStrategy())
         .setDefaultRequestConfig(requestConfig())
-        .setConnectionManager(buildConnectionManager())
         .evictExpiredConnections()
         .evictIdleConnections(TimeValue.ofSeconds(MAX_IDLE_TIME))
         .build();
   }
 
   /**
-   * Connection Manager를 생성
+   * 연결 풀(Connection Pool)을 생성하고 최대 연결 수와 라우트별 최대 연결 수를 설정
    *
-   * @return 설정된 PoolingHttpClientConnectionManager 객체
+   * @return PoolingHttpClientConnectionManager 객체
    */
   private PoolingHttpClientConnectionManager buildConnectionManager() {
     PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
@@ -76,28 +76,25 @@ public class RestClientConfig {
   }
 
   /**
-   * Request Configuration를 생성
+   * HTTP 요청의 응답 및 연결 요청 시간을 설정
    *
-   * @return 설정된 RequestConfig 객체
+   * @return RequestConfig 객체
    */
   private RequestConfig requestConfig() {
     return RequestConfig.custom()
-
         .setResponseTimeout(RESPONSE_TIMEOUT, TimeUnit.SECONDS)
         .setConnectionRequestTimeout(CONNECTION_REQUEST_TIMEOUT, TimeUnit.SECONDS)
-
         .build();
   }
 
   /**
-   * Retry Strategy를 생성
+   * HTTP 요청 실패 시 재시도 전략을 설정
    *
-   * @return 설정된 DefaultHttpRequestRetryStrategy 객체
+   * @return DefaultHttpRequestRetryStrategy 객체
    */
   private DefaultHttpRequestRetryStrategy buildRetryStrategy() {
     return new DefaultHttpRequestRetryStrategy(
-        MAX_RETRIES,
-        TimeValue.ofSeconds(RETRY_INTERVAL_IN_SECONDS)
+        MAX_RETRIES, TimeValue.ofSeconds(RETRY_INTERVAL_IN_SECONDS)
     );
   }
 }
