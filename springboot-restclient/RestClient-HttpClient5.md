@@ -1,4 +1,4 @@
-# [Spring] Apache HttpClient 5 기반 RestClient 구성하기
+# [Spring Boot] Apache HttpClient 5 기반 RestClient 구성하기
 
 `RestClient`는 HTTP 요청 시 다양한 HttpClient 라이브러리를 사용할 수 있으며, 이러한 라이브러리는 **`ClientHttpRequestFactory`**
 인터페이스의 구현체에 의해 처리됩니다.
@@ -62,12 +62,12 @@ RestClient를 구성할 때 사용되는 주요 Apache HttpClient 메서드는 �
 @Bean
 public HttpClient httpClient() {
   return HttpClients.custom()
-      .setConnectionBackoffStrategy(new DefaultBackoffStrategy())
+      .setConnectionManager(buildConnectionManager())
+      .setConnectionReuseStrategy(DefaultConnectionReuseStrategy.INSTANCE)
       .setKeepAliveStrategy(new DefaultConnectionKeepAliveStrategy())
       .setRetryStrategy(buildRetryStrategy())
-      .setConnectionReuseStrategy(DefaultConnectionReuseStrategy.INSTANCE)
+      .setConnectionBackoffStrategy(new DefaultBackoffStrategy())
       .setDefaultRequestConfig(requestConfig())
-      .setConnectionManager(buildConnectionManager())
       .evictExpiredConnections()
       .evictIdleConnections(TimeValue.ofSeconds(MAX_IDLE_TIME))
       .build();
